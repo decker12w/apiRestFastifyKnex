@@ -4,6 +4,7 @@ import request from "supertest"
 import { execSync } from "child_process"
 
 import { app } from "../src/app"
+import { faker } from "@faker-js/faker"
 
 describe("Transactions", () => {
   beforeAll(async () => {
@@ -23,8 +24,11 @@ describe("Transactions", () => {
     await request(app.server)
       .post("/transactions")
       .send({
-        title: "Salary",
-        amount: 3000,
+        title: faker.lorem.words(5),
+        amount: faker.number.int({
+          min: 1,
+          max: 100,
+        }),
         type: "credit",
       })
       .expect(201)
@@ -33,8 +37,11 @@ describe("Transactions", () => {
   //it.todo, it.only , it.skip
   it("should be able to list all transactions", async () => {
     const transaction = {
-      title: "Salary",
-      amount: 3000,
+      title: faker.lorem.words(5),
+      amount: faker.number.int({
+        min: 1,
+        max: 100,
+      }),
       type: "credit",
     }
     const creationResponse = await request(app.server)
@@ -61,8 +68,11 @@ describe("Transactions", () => {
   //it.todo, it.only , it.skip
   it("should be able to get a specific transaction", async () => {
     const transaction = {
-      title: "Salary",
-      amount: 3000,
+      title: faker.lorem.words(5),
+      amount: faker.number.int({
+        min: 1,
+        max: 100,
+      }),
       type: "credit",
     }
 
@@ -93,15 +103,19 @@ describe("Transactions", () => {
   }) // Add this closing curly brace
 
   it("should be able to get transactions summary", async () => {
+    const [credit, debit] = Array.from({ length: 2 }, () =>
+      faker.number.int({ min: 1, max: 100 }),
+    )
+
     const credito = {
-      title: "çeg",
-      amount: 5000,
+      title: faker.lorem.words(5),
+      amount: credit,
       type: "credit",
     }
 
     const debito = {
-      title: "çeg",
-      amount: 5000,
+      title: faker.lorem.words(5),
+      amount: debit,
       type: "debit",
     }
     const creationResponse = await request(app.server)

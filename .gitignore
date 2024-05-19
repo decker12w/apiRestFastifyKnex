@@ -8,5 +8,8 @@ db/*.db
 .env
 .env.test
 
+# Test 
+tests
+
 # Build
 build
